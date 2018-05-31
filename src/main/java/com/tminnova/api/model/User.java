@@ -1,58 +1,68 @@
 package com.tminnova.api.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "users")
 public class User {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	private String firstName;
-	private String lastName;
-	
-	public User() {
-		super();
+	@Column(name = "username")
+	private String username;
+
+	@Column(name = "password", nullable = false)
+	private String password;
+
+	@Column(name = "enabled", nullable = false)
+	private boolean enabled;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	private Set<Authorities> authorities = new HashSet<>();
+
+	public String getUsername() {
+		return username;
 	}
 
-	public User(Long id, String firstName, String lastName) {
-		super();
-		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public Long getId() {
-		return id;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public boolean isEnabled() {
+		return enabled;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
-	public String getLastName() {
-		return lastName;
+	public Set<Authorities> getAuthorities() {
+		return authorities;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setAuthorities(Set<Authorities> authorities) {
+		this.authorities = authorities;
 	}
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + "]";
+		return "User [username=" + username + ", password=" + password + ", enabled=" + enabled + ", authorities="
+				+ authorities + "]";
 	}
-	
 	
 }
