@@ -1,31 +1,44 @@
 package com.tminnova.api.model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "users")
-public class User {
+@EntityListeners(AuditingEntityListener.class)
+@JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, allowGetters = true)
+public class User implements Serializable{
 
 	@Id
-	@Column(name = "username")
+	@Column(name = "id")
+	private int id;
+	
+	@Column(name = "username", nullable = false)
 	private String username;
-
+	
 	@Column(name = "password", nullable = false)
 	private String password;
 
-	@Column(name = "enabled", nullable = false)
-	private boolean enabled;
+	public int getId() {
+		return id;
+	}
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-	private Set<Authorities> authorities = new HashSet<>();
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public String getUsername() {
 		return username;
@@ -43,26 +56,23 @@ public class User {
 		this.password = password;
 	}
 
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-
-	public Set<Authorities> getAuthorities() {
-		return authorities;
-	}
-
-	public void setAuthorities(Set<Authorities> authorities) {
-		this.authorities = authorities;
-	}
-
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", enabled=" + enabled + ", authorities="
-				+ authorities + "]";
+		return "User [id=" + id + ", username=" + username + ", password=" + password + "]";
 	}
+		
+	
+	/*
+	@Column(name = "enabled", nullable = false)
+	private boolean enabled;
+	*/
+
+	/*
+	 * @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	private Set<Authorities> authorities = new HashSet<>();
+	*/
+	
+
+
 	
 }

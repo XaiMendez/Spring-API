@@ -1,28 +1,30 @@
 package com.tminnova.api.controller;
 
-import java.security.Principal;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tminnova.api.model.User;
+import com.tminnova.api.repository.UserRepository;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
 	
+	@Autowired
+	UserRepository userRepository;
+	
 	@RequestMapping("/")
 	@ResponseBody
-	public User getAllUsers() {
-		User User = new User(1L, "test", "test");
-		System.out.println(User);
-		return User;
+	public List<User> getAllUsers() {
+		//User User = new User(1L, "test", "test");
+		System.out.println(userRepository.findAll());
+		return userRepository.findAll();
 	}
 
 }
